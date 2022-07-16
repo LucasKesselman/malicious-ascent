@@ -1,2 +1,2 @@
 import './style.css'
-import * as BABYLON from 'babylonjs/core';
+import * as BABYLON from '@babylonjs/core';
