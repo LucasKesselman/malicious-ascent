@@ -84,8 +84,10 @@ export default class Engine {
             this._aspectRatio = height / width;
         }
 
-        // bind window resize event callback
+        // bind window resize event callback and call onWindowResize() once manually
         window.addEventListener('resize', this.onWindowResize.bind(this));
+        this.onWindowResize();
+
 
         // start the render loop
         this._babylonEngine.runRenderLoop(() => {

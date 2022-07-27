@@ -28,11 +28,26 @@ export default class LevelManager {
         switch (levelID) {
             case 0:
                 
-                console.log("level 0");
+                console.log("level 0"); 
 
                 newScene = new BABYLON.Scene(engine.GetEngine());
-                newScene.createDefaultCameraOrLight(true, true, true);
-                newScene.createDefaultEnvironment();
+
+                newScene!.createDefaultCameraOrLight(true, true, true);
+                newScene!.createDefaultEnvironment();  
+
+                // Show inspector.
+                newScene!.debugLayer.show({
+                    embedMode: true,
+                    showInspector: true,
+                    showExplorer: true
+                });
+                
+
+                // BABYLON.SceneLoader.Append("https://www.babylonjs.com/Assets/DamagedHelmet/glTF/", "DamagedHelmet.gltf", newScene, function (meshes) {
+                //     newScene!.createDefaultCameraOrLight(true, true, true);
+                //     newScene!.createDefaultEnvironment();       
+                // });
+
                 break;
 
             case 1:
