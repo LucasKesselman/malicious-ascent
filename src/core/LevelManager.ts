@@ -1,4 +1,6 @@
 import * as BABYLON from '@babylonjs/core';
+import "@babylonjs/core/Debug/debugLayer";
+import "@babylonjs/inspector";
 import Engine from "./Engine";
 
 
@@ -35,12 +37,9 @@ export default class LevelManager {
                 newScene!.createDefaultCameraOrLight(true, true, true);
                 newScene!.createDefaultEnvironment();  
 
+
                 // Show inspector.
-                newScene!.debugLayer.show({
-                    embedMode: true,
-                    showInspector: true,
-                    showExplorer: true
-                });
+                newScene!.debugLayer.show();
                 
 
                 // BABYLON.SceneLoader.Append("https://www.babylonjs.com/Assets/DamagedHelmet/glTF/", "DamagedHelmet.gltf", newScene, function (meshes) {
