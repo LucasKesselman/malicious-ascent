@@ -1,5 +1,6 @@
 
 import * as BABYLON from '@babylonjs/core';
+import LevelManager from './LevelManager';
 
 
 export default class Engine {
@@ -7,29 +8,29 @@ export default class Engine {
     private _canvas: HTMLCanvasElement = document.getElementById('canvas-background') as HTMLCanvasElement;
     private _gameArea: HTMLDivElement = document.getElementById('game-area') as HTMLDivElement;
     private _babylonEngine: BABYLON.Engine;
-    private _aspectRatio: number;
+    private _aspectRatio: number|undefined;
 
-    private _audioOptions: BABYLON.IAudioEngineOptions = {
-            outputAudio: true,
-            spatialSound: true,
-            maxSoundPointers: 8,
-            disableAudioFocus: false,
-            audioDevice: null,
-            useHRTF: true,
-            hrtfMaxAngle: Math.PI,
-            audioContextInitialized: false,
-            audioEnabled: true,
-            useCustomHRTF: false,
+    // private _audioOptions: BABYLON.IAudioEngineOptions = {
+    //         outputAudio: true,
+    //         spatialSound: true,
+    //         maxSoundPointers: 8,
+    //         disableAudioFocus: false,
+    //         audioDevice: null,
+    //         useHRTF: true,
+    //         hrtfMaxAngle: Math.PI,
+    //         audioContextInitialized: false,
+    //         audioEnabled: true,
+    //         useCustomHRTF: false,
 
-            useAudioWorklet: true,
-            audioWorkletModule: './audio-worklet.js',
-            audioWorkletInputs: [
-                'input'
-            ],
-            audioWorkletOutputs: [
-                'output'
-            ]
-    }
+    //         useAudioWorklet: true,
+    //         audioWorkletModule: './audio-worklet.js',
+    //         audioWorkletInputs: [
+    //             'input'
+    //         ],
+    //         audioWorkletOutputs: [
+    //             'output'
+    //         ]
+    // }
 
     private _engineOptions: BABYLON.EngineOptions = {
  
@@ -40,7 +41,7 @@ export default class Engine {
         lockstepMaxSteps: 4,
         audioEngine: true,
         useHighPrecisionFloats: false,
-        audioEngineOptions: this._audioOptions,
+        // audioEngineOptions: this._audioOptions,
 
     }
 
@@ -56,12 +57,20 @@ export default class Engine {
         console.log(this._babylonEngine);
 
     }
+
+    /**
+     * @returns {BABYLON.Engine}
+     */
+    public GetEngine(): BABYLON.Engine {
+        return this._babylonEngine;
+    }
+
     /**
      * @param  {number} width
      * @param  {number} height
      * @returns void
      */
-    public Start(width: number, height: number): void {
+    public Start(width: number, height: number, levelManager:LevelManager): void {
         console.log("Start()");
     
         this._canvas.width = width;
@@ -75,12 +84,21 @@ export default class Engine {
             this._aspectRatio = height / width;
         }
 
+        // bind window resize event callback
         window.addEventListener('resize', this.onWindowResize.bind(this));
-        
-       
+
+        // start the render loop
+        this._babylonEngine.runRenderLoop(() => {
+            if (levelManager.GetCurrentScene() !== undefined) {
+                levelManager.GetCurrentScene()!.render();
+            }
+        });
     }
 
-
+    /**
+     * ### onWindowResize()
+     * @returns void
+     */
     private onWindowResize(): void {
         console.log("%cWindow Resized", "color:green");
 
@@ -89,14 +107,14 @@ export default class Engine {
         let windowAspectRatio: number = window.innerWidth / window.innerHeight;
 
         //horizontal
-        if(windowAspectRatio > this._aspectRatio){
+        if(windowAspectRatio > this._aspectRatio!){
             height = window.innerHeight;
-            width = height * this._aspectRatio;
+            width = height * this._aspectRatio!;
         }
         //vertical
         else{
             width = window.innerWidth;
-            height = width / this._aspectRatio;
+            height = width / this._aspectRatio!;
         }
 
         this._gameArea.style.width = width + "px";
@@ -105,12 +123,7 @@ export default class Engine {
         this._gameArea.style.marginLeft = (-(width / 2)) + "px";
         this._gameArea.style.marginTop = (-(height / 2)) + "px";
 
-        this._camera.aspect = width / height;
-        this._camera.updateProjectionMatrix;
-
-        this._renderer.OnWindowResize(width, height);
-    
-
+        this._babylonEngine.resize();
         
     }
 
