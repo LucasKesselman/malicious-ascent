@@ -39,7 +39,11 @@ export default class LevelManager {
 
 
                 // Show inspector.
-                newScene!.debugLayer.show();
+                newScene!.debugLayer.show({
+                    embedMode: false,
+                    showExplorer: true,
+                    showInspector: true,
+                });
                 
 
                 // BABYLON.SceneLoader.Append("https://www.babylonjs.com/Assets/DamagedHelmet/glTF/", "DamagedHelmet.gltf", newScene, function (meshes) {
