@@ -129,4 +129,13 @@ export default class Engine {
         
     }
 
+
+    /**
+     * ### GetCanvas()
+     * @returns HTMLCanvasElement
+     */
+    public GetCanvas(): HTMLCanvasElement {
+        return this._canvas;
+    }
+
 }

@@ -34,39 +34,89 @@ export default class LevelManager {
 
                 newScene = new BABYLON.Scene(engine.GetEngine());
 
-                newScene!.createDefaultCameraOrLight(true, true, true);
-                newScene!.createDefaultEnvironment();  
-
-
                 // Show inspector.
                 newScene!.debugLayer.show({
                     embedMode: false,
                     showExplorer: true,
                     showInspector: true,
                 });
+
+
+                // replace with my own 
+                //newScene!.createDefaultCameraOrLight(true, true, true);
+                // newScene!.createDefaultEnvironment({
+
+                // });  
+
+                //replace this with something better import it from bender?? 
+                const LevelLight1 = new BABYLON.HemisphericLight(`HemisphericLightfor levelID=${levelID}`, new BABYLON.Vector3(-1, 2, -1), newScene);
+                LevelLight1.intensity = 1;
+                LevelLight1.diffuse = new BABYLON.Color3(1, 1, 1);
+                LevelLight1.specular = new BABYLON.Color3(1, 1, 1);
+                LevelLight1.groundColor = new BABYLON.Color3(0, 0, 0);
+
+                const LevelLight = new BABYLON.DirectionalLight(`DirectionalLightfor levelID=${levelID}`, new BABYLON.Vector3(1, -2, 1), newScene);
+                LevelLight.intensity = 3;
+                LevelLight.position = new BABYLON.Vector3(-400, 800, -400);
+                LevelLight.diffuse = new BABYLON.Color3(1, 1, 1);
+
+
+                //LevelLight1.direction = new BABYLON.Vector3(0, -1, 0);
+  
+
+
+
+
+                // replace this with a FollowCamera instead of ArcRotateCamera
+                const Levelcamera = new BABYLON.ArcRotateCamera(`Camera for levelID=${levelID}`, -Math.PI / 2, Math.PI / 2.5, 60, new BABYLON.Vector3(0, 0, 0), newScene);
+
+
+
+                // replace this with Levelcamera.attachControl(engine.GetGamepad(), true);
+                Levelcamera.attachControl(engine.GetCanvas(), true);
                 
-                let environmentNode = new BABYLON.Node("environment", newScene);
+                
+
+                //maybe try to figure out a way to made a node in the scene explorer that is't __root__ ... call it "EnvironmentNode" and it has all the relevent meshes and stuff
+                ////let environmentNode = new BABYLON.Node("environment", newScene);
 
 
 
-                BABYLON.SceneLoader.ImportMesh("","../babylon_blender_assets/","platformv1.gltf",newScene, function(meshes){
+                BABYLON.SceneLoader.ImportMeshAsync(["environment-ico-platform"], "../babylon_blender_assets/", "platformv1.gltf", newScene).then( (environmentMeshes) => {
 
-                    meshes.forEach(function(mesh){
-                        mesh.parent = environmentNode;
+                    //DO THIS LATER
+                    // environmentMeshes.skeletons.forEach( (skeleton) => {
+                    //     skeleton.enableBlending(0.5);
+                    //     skeleton.name
+
+
+                    // });
+
+
+                    environmentMeshes.meshes.forEach(mesh => {
+
                         mesh.isVisible = true;
-                        mesh.isPickable = true;
                         mesh.checkCollisions = true;
-                        mesh.position.y = 0;
-                        mesh.position.x = 0;
-                        mesh.position.z = 0;
-                        mesh.scaling.x = 0;
-                        mesh.scaling.y = 0;
-                        mesh.scaling.z = 0;
-                        mesh.rotation.x = 0;
-                        mesh.rotation.y = 0;
-                        mesh.rotation.z = 0;
+                        mesh.receiveShadows = true;
+                        mesh.actionManager = new BABYLON.ActionManager(newScene);
+                        mesh.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, (evt) => {
+                            console.log(`Mesh picked:\n${mesh.name}\n\n`,`Pick Event:`, evt, `\n\n`, `Mesh:`, mesh);
+                        }));
+
+                        console.log(mesh);
+
+                        
                     });
-                })
+
+
+
+       
+                }).catch( (err) => {
+                    console.error(err);
+                } );
+                    
+       
+
 
                 // BABYLON.SceneLoader.Load("", "../babylon_blender_assets/untitled.babylon", engine.GetEngine(),function (scene) { });
 
