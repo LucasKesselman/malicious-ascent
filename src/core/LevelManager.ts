@@ -45,6 +45,30 @@ export default class LevelManager {
                     showInspector: true,
                 });
                 
+                let environmentNode = new BABYLON.Node("environment", newScene);
+
+
+
+                BABYLON.SceneLoader.ImportMesh("","../babylon_blender_assets/","platformv1.gltf",newScene, function(meshes){
+
+                    meshes.forEach(function(mesh){
+                        mesh.parent = environmentNode;
+                        mesh.isVisible = true;
+                        mesh.isPickable = true;
+                        mesh.checkCollisions = true;
+                        mesh.position.y = 0;
+                        mesh.position.x = 0;
+                        mesh.position.z = 0;
+                        mesh.scaling.x = 0;
+                        mesh.scaling.y = 0;
+                        mesh.scaling.z = 0;
+                        mesh.rotation.x = 0;
+                        mesh.rotation.y = 0;
+                        mesh.rotation.z = 0;
+                    });
+                })
+
+                // BABYLON.SceneLoader.Load("", "../babylon_blender_assets/untitled.babylon", engine.GetEngine(),function (scene) { });
 
                 // BABYLON.SceneLoader.Append("https://www.babylonjs.com/Assets/DamagedHelmet/glTF/", "DamagedHelmet.gltf", newScene, function (meshes) {
                 //     newScene!.createDefaultCameraOrLight(true, true, true);
