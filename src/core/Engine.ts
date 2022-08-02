@@ -9,6 +9,8 @@ export default class Engine {
     private _gameArea: HTMLDivElement = document.getElementById('game-area') as HTMLDivElement;
     private _babylonEngine: BABYLON.Engine;
     private _aspectRatio: number|undefined;
+    private _gamepadManager: BABYLON.GamepadManager;
+    
 
     // private _audioOptions: BABYLON.IAudioEngineOptions = {
     //         outputAudio: true,
@@ -54,6 +56,11 @@ export default class Engine {
             this._engineOptions,
             true
         );
+
+        //init the Gampad Manager
+        this._gamepadManager = new BABYLON.GamepadManager();
+        
+
         console.log(this._babylonEngine);
 
     }

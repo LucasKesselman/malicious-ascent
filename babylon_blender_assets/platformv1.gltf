@@ -15,7 +15,7 @@
     "nodes" : [
         {
             "mesh" : 0,
-            "name" : "environment-ico-platform",
+            "name" : "environment-ico-platform-mesh",
             "scale" : [
                 30,
                 30,
@@ -26,7 +26,7 @@
     "materials" : [
         {
             "doubleSided" : true,
-            "name" : "Material.001",
+            "name" : "environment-ico-platform-material",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
                     0.028918055817484856,

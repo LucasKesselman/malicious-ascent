@@ -82,7 +82,7 @@ export default class LevelManager {
 
 
 
-                BABYLON.SceneLoader.ImportMeshAsync(["environment-ico-platform"], "../babylon_blender_assets/", "platformv1.gltf", newScene).then( (environmentMeshes) => {
+                BABYLON.SceneLoader.ImportMeshAsync(["environment-ico-platform-mesh"], "../babylon_blender_assets/", "platformv1.gltf", newScene).then( (environmentMeshes) => {
 
                     //DO THIS LATER
                     // environmentMeshes.skeletons.forEach( (skeleton) => {
