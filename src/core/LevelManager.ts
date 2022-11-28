@@ -74,7 +74,16 @@ export default class LevelManager {
                 //LevelLight1.direction = new BABYLON.Vector3(0, -1, 0);
   
 
-
+                //skybox
+                // Skybox
+                var skybox = BABYLON.MeshBuilder.CreateBox("skyBox", {size:1000.0}, newScene);
+                var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", newScene);
+                skyboxMaterial.backFaceCulling = false;
+                skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("textures/skybox", newScene);
+                skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+                skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+                skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+                skybox.material = skyboxMaterial;
 
 
                 // replace this with a FollowCamera instead of ArcRotateCamera
