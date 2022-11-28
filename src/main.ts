@@ -34,7 +34,9 @@ function init(): void {
     
     // create the game level manager
     let levelManager = new LevelManager();
-    levelManager.LoadLevel(0, engine);
+
+    // Load the first level
+    levelManager.LoadLevel(1, engine);
 
     // start the game engine
     engine.Start(1280, 720, levelManager);
@@ -45,5 +47,4 @@ function init(): void {
 function initHTML(): void {
     console.log("initHTML()");
 
-    
 }

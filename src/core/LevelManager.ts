@@ -1,4 +1,5 @@
 import * as BABYLON from '@babylonjs/core';
+import * as GUI from 'babylonjs-gui';
 import "@babylonjs/core/Debug/debugLayer";
 import "@babylonjs/inspector";
 import Engine from "./Engine";
@@ -29,8 +30,17 @@ export default class LevelManager {
 
         switch (levelID) {
             case 0:
+
+                //const advancedTexture = GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
                 
-                console.log("level 0"); 
+
+
+
+                break;
+    
+            case 1:
+                
+                console.log("level 1"); 
 
                 newScene = new BABYLON.Scene(engine.GetEngine());
 
@@ -115,24 +125,68 @@ export default class LevelManager {
                     console.error(err);
                 } );
                     
+                BABYLON.SceneLoader.ImportMeshAsync(["environment-ico-platform-mesh"], "../babylon_blender_assets/", "platformv1.gltf", newScene).then( (environmentMeshes) => {
+
+                    //DO THIS LATER
+                    // environmentMeshes.skeletons.forEach( (skeleton) => {
+                    //     skeleton.enableBlending(0.5);
+                    //     skeleton.name
+
+
+                    // });
+
+
+                    environmentMeshes.meshes.forEach(mesh => {
+
+                        mesh.isVisible = true;
+                        mesh.checkCollisions = true;
+                        mesh.receiveShadows = true;
+                        mesh.actionManager = new BABYLON.ActionManager(newScene);
+                        mesh.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, (evt) => {
+                            console.log(`Mesh picked:\n${mesh.name}\n\n`,`Pick Event:`, evt, `\n\n`, `Mesh:`, mesh);
+                        }));
+
+                        console.log(mesh);
+
+                        
+                    });
+
+
+
        
+                }).catch( (err) => {
+                    console.error(err);
+                } );
 
 
-                // BABYLON.SceneLoader.Load("", "../babylon_blender_assets/untitled.babylon", engine.GetEngine(),function (scene) { });
 
-                // BABYLON.SceneLoader.Append("https://www.babylonjs.com/Assets/DamagedHelmet/glTF/", "DamagedHelmet.gltf", newScene, function (meshes) {
-                //     newScene!.createDefaultCameraOrLight(true, true, true);
-                //     newScene!.createDefaultEnvironment();       
-                // });
+                BABYLON.SceneLoader.Append('../assets/','KURENAI_lowpoly.gltf',newScene, (characterMeshes) => {
+
+                    characterMeshes.meshes.forEach(mesh => {
+
+                        mesh.isVisible = true;
+                        mesh.checkCollisions = true;
+                        mesh.receiveShadows = true;
+                        mesh.actionManager = new BABYLON.ActionManager(newScene);
+                        mesh.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, (evt) => {
+                            console.log(`Mesh picked:\n${mesh.name}\n\n`,`Pick Event:`, evt, `\n\n`, `Mesh:`, mesh);
+                        }));
+                        console.log(mesh);
+
+                    
+                    });
+
+                });
+
 
                 break;
 
-            case 1:
+            case 2:
             
                 newScene = new BABYLON.Scene(engine.GetEngine());
                 break;
 
-            case 2:
+            case 3:
 
                 newScene = new BABYLON.Scene(engine.GetEngine());
                 break;
