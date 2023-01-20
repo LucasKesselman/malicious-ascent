@@ -1,4 +1,6 @@
 import './style.css'
+import * as BABYLON from '@babylonjs/core';
+
 import Engine from './core/Engine';
 import LevelManager from './core/LevelManager';
 
